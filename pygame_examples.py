@@ -34,20 +34,30 @@ def game_selection_loop(games):
     while True:
         list_games(games)
         game_name = ask_for_game_choice(games)
-        try:
-            exec("import pygame.examples.%s as gen" % game_name)
-            exec("gen.main()")
-            break
+        if game_name != "EXIT_GAME":
+            try:
+                exec("import pygame.examples.%s as gen" % game_name)
+                exec("gen.main()")
+                print()
+                print("**** Game: '%s' finished. Hit Enter to try Another Game *****" % game_name)
+                print("Or type 'EXIT' to leave the game.")
+                after_game = input().lower()
+                if after_game == "exit":
+                    print("As you wish. Exiting game!")
+                    break
 
-        except TypeError as e:
-            print()
-            print("WHOOPS! That game will not work without further input!")
-            print("Error was:")
-            print("\t%s" % e)
-            print("Please try another game.")
-            print()
-            print("**** Hit Enter to Continue *****")
-            input()
+            except TypeError as e:
+                print()
+                print("WHOOPS! That game will not work without further input!")
+                print("Error was:")
+                print("\t%s" % e)
+                print("Please try another game.")
+                print()
+                print("**** Hit Enter to Continue *****")
+                input()
+        else:
+            print("As you wish. Exiting game!")
+            break
 
 
 def list_games(games):
@@ -57,6 +67,8 @@ def list_games(games):
     """
     for idx, game in enumerate(games, 1):
         print("%d: %s" % (idx, game))
+    print()
+    print("... Or type 'EXIT' to end program.")
     print()
     print()
 
@@ -69,7 +81,9 @@ def ask_for_game_choice(games):
     games_len = len(games)
     while locals().get("response", None) is None:
         response = input("Give me the number of a game you'd like to try (1 to %s):   " % games_len)
-        if isfloat(response):
+        if response.lower() == "exit":
+            return "EXIT_GAME"
+        elif isfloat(response):
             if response.isdigit():
                 response = int(response)
                 if not (1 <= response <= games_len):
@@ -84,6 +98,7 @@ def ask_for_game_choice(games):
             print("Gosh . . . I mean, come on. That's not even a number! Try again.")
             print()
             response = None
+
     game_name = games[response - 1]
     return game_name
 
