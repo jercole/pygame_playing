@@ -39,8 +39,10 @@ def game_selection_loop(games):
                 exec("import pygame.examples.%s as gen" % game_name)
                 exec("gen.main()")
                 print()
-                print("**** Game: '%s' finished. Hit Enter to try Another Game *****" % game_name)
-                print("Or type 'EXIT' to leave the game.")
+                print("**** Game: '%s' finished. ****")
+                print()
+                print("Hit *Enter* to try Another Game or type 'EXIT' to leave the game8!")
+                print("")
                 after_game = input().lower()
                 if after_game == "exit":
                     print("As you wish. Exiting game!")
